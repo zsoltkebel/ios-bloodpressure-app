@@ -8,7 +8,27 @@
 import SwiftUI
 import HealthKit
 
+struct SimpleNumberInput: View {
+    let text: String
+    let value: Binding<Int?>
+    
+    @FocusState private var focused: Bool
+    
+    var body: some View {
+        HStack {
+            Text(text).foregroundStyle(.gray).onTapGesture(perform: {
+                focused = true
+            })
+            TextField("", value: value, format: .number)
+                .keyboardType(.numberPad)
+                .multilineTextAlignment(.trailing)
+                .focused($focused)
+        }
+    }
+}
+
 struct ContentView: View {
+    @State private var date = Date()
     @State private var systolic: Int?
     @State private var diastolic: Int?
     @State private var heartRate: Int?
@@ -17,43 +37,93 @@ struct ContentView: View {
     
     private var hman = HealthKitManager()
     
+    @State private var showNowButton = false
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
-            TextField("Systolic", value: $systolic, format: .number).keyboardType(.numberPad)
-            TextField("Diastolic", value: $diastolic, format: .number).keyboardType(.numberPad)
-            TextField("Heart Rate", value: $heartRate, format: .number).keyboardType(.numberPad)
-            Button(action: save) {
-                Text("Record")
-            }.buttonStyle(.borderedProminent)
-                .alert(
-                    "Failed to save data to Health",
-                    isPresented: $healthKitAccessError
-                ) {
-                    Button("OK") {
-                        // Handle the acknowledgement.
-                        healthKitAccessError = false
+        NavigationStack {
+            ZStack {
+                Form {
+                    HStack {
+                        DatePicker(
+                            "Date",
+                            selection: $date,
+                            displayedComponents: [.date, .hourAndMinute]
+                        ).foregroundStyle(.gray)
+                            .datePickerStyle(.compact)
+                        if showNowButton || !Calendar.current.isDate(date, equalTo: Date(), toGranularity: .minute) {
+                            Button {
+                                date = Date()
+                                showNowButton = false
+                                refreshNowButtonNextMinute()
+                            } label: {
+                                Text("Now")
+                            }
+                        }
                     }
-                } message: {
-                    Text("Error while accessing Health data.")
+                    Section(header: Text("Blood Pressure")) {
+                        SimpleNumberInput(text: "Systolic", value: $systolic)
+                        SimpleNumberInput(text: "Diastolic", value: $diastolic)
+                    }
+                    Section(header: Text("Heart Rate")) {
+                        SimpleNumberInput(text: "BPM", value: $heartRate)
+                    }
+                    
                 }
+                VStack {
+                    Spacer()
+                    Button {
+                        save()
+                    } label: {
+                        Label("Add to Health", systemImage: "plus").frame(maxWidth: .infinity, maxHeight: 36)
+                    }
+                    
+                    .disabled(systolic == nil || diastolic == nil || heartRate == nil).labelStyle(.titleAndIcon).buttonStyle(.borderedProminent).padding()
+                    .alert(
+                        "Failed to save data to Health",
+                        isPresented: $healthKitAccessError
+                    ) {
+                        Button("OK") {
+                            // Handle the acknowledgement.
+                            healthKitAccessError = false
+                        }
+                    } message: {
+                        Text("Error while accessing Health data.")
+                    }
+                }
+            }.navigationTitle("Add Data")
+                .onAppear(perform: {
+                    refreshNowButtonNextMinute()
+                })
         }
-        .padding()
+    }
+    
+    func refreshNowButtonNextMinute() {
+        let nextMinute = DispatchTime.now() + 60 - Double(Calendar.current.component(.second, from: Date()))
+        DispatchQueue.main.asyncAfter(deadline: nextMinute) {
+            showNowButton = true
+        }
+    }
+    
+    func wid(text: String, value: Binding<Int>) -> any View {
+        return HStack {
+            Text(text)
+            TextField("input", value: value, format: .number).keyboardType(.numberPad).multilineTextAlignment(.trailing)
+        }
     }
     
     func save() {
         if HKHealthStore.isHealthDataAvailable() {
             // Add code to use HealthKit here.
             hman.authorizationRequestHealthKit { available, error in
-                hman.saveBloodPressureMeasurement(systolic: systolic!, diastolic: diastolic!, heartRate: heartRate!) { comp, error in
+                hman.saveBloodPressureMeasurement(date: date, systolic: systolic!, diastolic: diastolic!, heartRate: heartRate!) { comp, error in
                     healthKitAccessError = error != nil
+                    if error == nil {
+                        systolic = nil
+                        diastolic = nil
+                        heartRate = nil
+                    }
                 }
             }
-            
-            
         } else {
             healthKitAccessError = true
             print("wrong")
@@ -91,9 +161,8 @@ class HealthKitManager {
         print("here")
     }
     
-    func saveBloodPressureMeasurement(systolic: Int, diastolic: Int, heartRate: Int, completion: @escaping (Bool, Error?) -> Void) {
+    func saveBloodPressureMeasurement(date startDate: Date = Date(), systolic: Int, diastolic: Int, heartRate: Int, completion: @escaping (Bool, Error?) -> Void) {
         // 1
-        let startDate = Date()
         let endDate = startDate
         // 2
         let systolicType = HKQuantityType.quantityType(forIdentifier: .bloodPressureSystolic)!
