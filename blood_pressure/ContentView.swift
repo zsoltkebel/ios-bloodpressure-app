@@ -40,6 +40,8 @@ struct ContentView: View {
     // the toggle for showing "Health access is denied open Settings" to enable alert
     @State private var showingAccessDeniedAlert = false
     
+    @State private var showingSaved = false
+    
     var body: some View {
         NavigationStack {
             ZStack {
@@ -75,7 +77,11 @@ struct ContentView: View {
                     Button {
                         onAddDataPressed()
                     } label: {
-                        Label("Add to Health", systemImage: "plus").frame(maxWidth: .infinity, maxHeight: 36)
+                        if showingSaved {
+                            Label("Saved Successfully", systemImage: "checkmark").frame(maxWidth: .infinity, maxHeight: 36)
+                        } else {
+                            Label("Add to Health", systemImage: "plus").frame(maxWidth: .infinity, maxHeight: 36)
+                        }
                     }
                     .disabled(systolic == nil || diastolic == nil || heartRate == nil).labelStyle(.titleAndIcon).buttonStyle(.borderedProminent).padding()
                     .alert(
@@ -131,6 +137,10 @@ struct ContentView: View {
                     systolic = nil
                     diastolic = nil
                     heartRate = nil
+                    showingSaved = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                        showingSaved = false
+                    }
                 }
             }
         }
