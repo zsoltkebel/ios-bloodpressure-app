@@ -28,16 +28,17 @@ struct SimpleNumberInput: View {
 }
 
 struct ContentView: View {
-    @State private var date = Date()
+    @State private var date = Date()  // date and time of the measurement
     @State private var systolic: Int?
     @State private var diastolic: Int?
     @State private var heartRate: Int?
     
-    @State private var healthKitAccessError: Bool = false
+    private var healtKitManager = HealthKitManager()
     
-    private var hman = HealthKitManager()
-    
-    @State private var showNowButton = false
+    // the toggle for showing-hiding the "Now" button next to the date and time picker
+    @State private var showingNowButton = false
+    // the toggle for showing "Health access is denied open Settings" to enable alert
+    @State private var showingAccessDeniedAlert = false
     
     var body: some View {
         NavigationStack {
@@ -50,14 +51,14 @@ struct ContentView: View {
                             displayedComponents: [.date, .hourAndMinute]
                         ).foregroundStyle(.gray)
                             .datePickerStyle(.compact)
-                        if showNowButton || !Calendar.current.isDate(date, equalTo: Date(), toGranularity: .minute) {
+                        if showingNowButton || !Calendar.current.isDate(date, equalTo: Date(), toGranularity: .minute) {
                             Button {
                                 date = Date()
-                                showNowButton = false
+                                showingNowButton = false
                                 refreshNowButtonNextMinute()
                             } label: {
                                 Text("Now")
-                            }
+                            }.padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 0))
                         }
                     }
                     Section(header: Text("Blood Pressure")) {
@@ -72,35 +73,42 @@ struct ContentView: View {
                 VStack {
                     Spacer()
                     Button {
-                        save()
+                        onAddDataPressed()
                     } label: {
                         Label("Add to Health", systemImage: "plus").frame(maxWidth: .infinity, maxHeight: 36)
                     }
-                    
                     .disabled(systolic == nil || diastolic == nil || heartRate == nil).labelStyle(.titleAndIcon).buttonStyle(.borderedProminent).padding()
                     .alert(
-                        "Failed to save data to Health",
-                        isPresented: $healthKitAccessError
+                        "Can't access your Health Data",
+                        isPresented: $showingAccessDeniedAlert
                     ) {
                         Button("OK") {
                             // Handle the acknowledgement.
-                            healthKitAccessError = false
+                        }
+                        Button("Open Settings") {
+                            // Get the settings URL and open it
+                            // Settings url would be URL(string: UIApplication.openSettingsURLString)
+                            if let url = URL(string: "App-Prefs:HEALTH&path=SOURCES_ITEM") {
+                                UIApplication.shared.open(url)
+                            }
                         }
                     } message: {
-                        Text("Error while accessing Health data.")
+                        Text("Go to Settings > Health > Data Accesss & Devices > blood_pressure and click \"Turn On All\"")
                     }
                 }
-            }.navigationTitle("Add Data")
-                .onAppear(perform: {
-                    refreshNowButtonNextMinute()
-                })
+            }
+            .onAppear {
+                refreshNowButtonNextMinute()
+            }
+            .navigationTitle("Add Data")
         }
+        
     }
     
     func refreshNowButtonNextMinute() {
         let nextMinute = DispatchTime.now() + 60 - Double(Calendar.current.component(.second, from: Date()))
         DispatchQueue.main.asyncAfter(deadline: nextMinute) {
-            showNowButton = true
+            showingNowButton = true
         }
     }
     
@@ -111,23 +119,22 @@ struct ContentView: View {
         }
     }
     
-    func save() {
-        if HKHealthStore.isHealthDataAvailable() {
-            // Add code to use HealthKit here.
-            hman.authorizationRequestHealthKit { available, error in
-                hman.saveBloodPressureMeasurement(date: date, systolic: systolic!, diastolic: diastolic!, heartRate: heartRate!) { comp, error in
-                    healthKitAccessError = error != nil
-                    if error == nil {
-                        systolic = nil
-                        diastolic = nil
-                        heartRate = nil
-                    }
+    func onAddDataPressed() {
+        healtKitManager.authorizationRequestHealthKit { available, error in
+            guard healtKitManager.isSharingAuthorized() else {
+                print("not auhtorised")
+                showingAccessDeniedAlert = true
+                return
+            }
+            healtKitManager.saveBloodPressureMeasurement(date: date, systolic: systolic!, diastolic: diastolic!, heartRate: heartRate!) { comp, error in
+                if error == nil {
+                    systolic = nil
+                    diastolic = nil
+                    heartRate = nil
                 }
             }
-        } else {
-            healthKitAccessError = true
-            print("wrong")
         }
+        
     }
     
 }
@@ -138,27 +145,33 @@ struct ContentView: View {
 
 class HealthKitManager {
     fileprivate let healthKitStore = HKHealthStore()
+    
+    private let systolicType = HKQuantityType.quantityType(forIdentifier: .bloodPressureSystolic)!
+    private let diastolicType = HKSampleType.quantityType(forIdentifier: .bloodPressureSystolic)!
+    private let heartRateType = HKSampleType.quantityType(forIdentifier: .heartRate)!
+    
+    func isSharingAuthorized() -> Bool {
+        let systolicStatus = healthKitStore.authorizationStatus(for: systolicType)
+        let diastolicStatus = healthKitStore.authorizationStatus(for: diastolicType)
+        let heartRateStatus = healthKitStore.authorizationStatus(for: heartRateType)
+        return systolicStatus == HKAuthorizationStatus.sharingAuthorized && diastolicStatus == HKAuthorizationStatus.sharingAuthorized && heartRateStatus == HKAuthorizationStatus.sharingAuthorized
+    }
+    
     func authorizationRequestHealthKit(completion: @escaping (Bool, Error?) -> Void) {
         // 1
-        if !HKHealthStore.isHealthDataAvailable() {
-            let error = NSError(domain: "com.chariotsolutions.mobile", code: 999,
+        guard HKHealthStore.isHealthDataAvailable() else {
+            let error = NSError(domain: "com.zsoltkebel.mobile", code: 999,
                                 userInfo: [NSLocalizedDescriptionKey : "Healthkit not available on this device"])
             completion(false, error)
             print("HealthKit not available on this device")
             return
         }
         // 2
-        let readTypes: Set<HKSampleType> = [HKSampleType.quantityType(forIdentifier: HKQuantityTypeIdentifier.bloodPressureDiastolic)!,
-                                            HKSampleType.quantityType(forIdentifier: .bloodPressureSystolic)!,
-                                            HKSampleType.quantityType(forIdentifier: .heartRate)!]
-        let writeTypes: Set<HKSampleType> = [HKSampleType.quantityType(forIdentifier: .bloodPressureDiastolic)!,
-                                             HKSampleType.quantityType(forIdentifier: .bloodPressureSystolic)!,
-                                             HKSampleType.quantityType(forIdentifier: .heartRate)!]
+        let types: Set<HKSampleType> = [systolicType, diastolicType, heartRateType]
         // 3
-        healthKitStore.requestAuthorization(toShare: writeTypes, read: readTypes) { (success: Bool, error: Error?) in
+        healthKitStore.requestAuthorization(toShare: types, read: types) { (success: Bool, error: Error?) in
             completion(success, error)
         }
-        print("here")
     }
     
     func saveBloodPressureMeasurement(date startDate: Date = Date(), systolic: Int, diastolic: Int, heartRate: Int, completion: @escaping (Bool, Error?) -> Void) {
