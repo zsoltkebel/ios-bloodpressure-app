@@ -157,7 +157,7 @@ class HealthKitManager {
     fileprivate let healthKitStore = HKHealthStore()
     
     private let systolicType = HKQuantityType.quantityType(forIdentifier: .bloodPressureSystolic)!
-    private let diastolicType = HKSampleType.quantityType(forIdentifier: .bloodPressureSystolic)!
+    private let diastolicType = HKSampleType.quantityType(forIdentifier: .bloodPressureDiastolic)!
     private let heartRateType = HKSampleType.quantityType(forIdentifier: .heartRate)!
     
     func isSharingAuthorized() -> Bool {
