@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AF7A1B5F2B6FAC6D000FD995 /* ScheduleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF7A1B5E2B6FAC6D000FD995 /* ScheduleView.swift */; };
 		AF99E5D92B62562400B30ABE /* blood_pressureApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF99E5D82B62562400B30ABE /* blood_pressureApp.swift */; };
 		AF99E5DB2B62562400B30ABE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF99E5DA2B62562400B30ABE /* ContentView.swift */; };
 		AF99E5DD2B62562600B30ABE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF99E5DC2B62562600B30ABE /* Assets.xcassets */; };
@@ -14,6 +15,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		AF7A1B5E2B6FAC6D000FD995 /* ScheduleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleView.swift; sourceTree = "<group>"; };
 		AF99E5D52B62562400B30ABE /* blood_pressure.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = blood_pressure.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF99E5D82B62562400B30ABE /* blood_pressureApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = blood_pressureApp.swift; sourceTree = "<group>"; };
 		AF99E5DA2B62562400B30ABE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -54,6 +56,7 @@
 			children = (
 				AF99E5D82B62562400B30ABE /* blood_pressureApp.swift */,
 				AF99E5DA2B62562400B30ABE /* ContentView.swift */,
+				AF7A1B5E2B6FAC6D000FD995 /* ScheduleView.swift */,
 				AF99E5DC2B62562600B30ABE /* Assets.xcassets */,
 				AF99E5DE2B62562600B30ABE /* blood_pressure.entitlements */,
 				AF99E5DF2B62562600B30ABE /* Preview Content */,
@@ -141,6 +144,7 @@
 			files = (
 				AF99E5DB2B62562400B30ABE /* ContentView.swift in Sources */,
 				AF99E5D92B62562400B30ABE /* blood_pressureApp.swift in Sources */,
+				AF7A1B5F2B6FAC6D000FD995 /* ScheduleView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -275,6 +279,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Blood Pressure";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "The app needs to access health data to be able to read your measurements from the Health app.";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "The app needs to access health data to be able to save your measurements into the Health app.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
@@ -317,6 +322,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Blood Pressure";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "The app needs to access health data to be able to read your measurements from the Health app.";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "The app needs to access health data to be able to save your measurements into the Health app.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;

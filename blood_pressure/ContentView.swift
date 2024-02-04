@@ -42,73 +42,99 @@ struct ContentView: View {
     
     @State private var showingSaved = false
     
+    @State private var showingSheet = false
+    
+    var body2: some View {
+        ScheduleView()
+    }
     var body: some View {
-        NavigationStack {
-            ZStack {
-                Form {
-                    HStack {
-                        DatePicker(
-                            "Date",
-                            selection: $date,
-                            displayedComponents: [.date, .hourAndMinute]
-                        ).foregroundStyle(.gray)
-                            .datePickerStyle(.compact)
-                        if showingNowButton || !Calendar.current.isDate(date, equalTo: Date(), toGranularity: .minute) {
-                            Button {
-                                date = Date()
-                                showingNowButton = false
-                                refreshNowButtonNextMinute()
-                            } label: {
-                                Text("Now")
-                            }.padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 0))
-                        }
-                    }
-                    Section(header: Text("Blood Pressure")) {
-                        SimpleNumberInput(text: "Systolic", value: $systolic)
-                        SimpleNumberInput(text: "Diastolic", value: $diastolic)
-                    }
-                    Section(header: Text("Heart Rate")) {
-                        SimpleNumberInput(text: "BPM", value: $heartRate)
-                    }
-                    
-                }
-                VStack {
-                    Spacer()
-                    Button {
-                        onAddDataPressed()
-                    } label: {
-                        if showingSaved {
-                            Label("Saved Successfully", systemImage: "checkmark").frame(maxWidth: .infinity, maxHeight: 36)
-                        } else {
-                            Label("Add to Health", systemImage: "plus").frame(maxWidth: .infinity, maxHeight: 36)
-                        }
-                    }
-                    .disabled(systolic == nil || diastolic == nil || heartRate == nil).labelStyle(.titleAndIcon).buttonStyle(.borderedProminent).padding()
-                    .alert(
-                        "Can't access your Health Data",
-                        isPresented: $showingAccessDeniedAlert
-                    ) {
-                        Button("OK") {
-                            // Handle the acknowledgement.
-                        }
-                        Button("Open Settings") {
-                            // Get the settings URL and open it
-                            // Settings url would be URL(string: UIApplication.openSettingsURLString)
-                            if let url = URL(string: "App-Prefs:HEALTH&path=SOURCES_ITEM") {
-                                UIApplication.shared.open(url)
+            NavigationStack {
+                ZStack {
+                    Form {
+                        HStack {
+                            DatePicker(
+                                "Date",
+                                selection: $date,
+                                displayedComponents: [.date, .hourAndMinute]
+                            ).foregroundStyle(.gray)
+                                .datePickerStyle(.compact)
+                            if showingNowButton || !Calendar.current.isDate(date, equalTo: Date(), toGranularity: .minute) {
+                                Button {
+                                    date = Date()
+                                    showingNowButton = false
+                                    refreshNowButtonNextMinute()
+                                } label: {
+                                    Text("Now")
+                                }.padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 0))
                             }
                         }
-                    } message: {
-                        Text("Go to Settings > Health > Data Accesss & Devices > blood_pressure and click \"Turn On All\"")
+                        Section(header: Text("Blood Pressure")) {
+                            SimpleNumberInput(text: "Systolic", value: $systolic)
+                            SimpleNumberInput(text: "Diastolic", value: $diastolic)
+                        }
+                        Section(header: Text("Heart Rate")) {
+                            SimpleNumberInput(text: "BPM", value: $heartRate)
+                        }
+                        
+                    }
+                    VStack {
+                        Spacer()
+                        Button {
+                            onAddDataPressed()
+                        } label: {
+                            if showingSaved {
+                                Label("Saved Successfully", systemImage: "checkmark").frame(maxWidth: .infinity, maxHeight: 36)
+                            } else {
+                                Label("Add to Health", systemImage: "plus").frame(maxWidth: .infinity, maxHeight: 36)
+                            }
+                        }
+                        .disabled(systolic == nil || diastolic == nil || heartRate == nil).labelStyle(.titleAndIcon).buttonStyle(.borderedProminent).padding()
+                        .alert(
+                            "Can't access your Health Data",
+                            isPresented: $showingAccessDeniedAlert
+                        ) {
+                            Button("OK") {
+                                // Handle the acknowledgement.
+                            }
+                            Button("Open Settings") {
+                                // Get the settings URL and open it
+                                // Settings url would be URL(string: UIApplication.openSettingsURLString)
+                                if let url = URL(string: "App-Prefs:HEALTH&path=SOURCES_ITEM") {
+                                    UIApplication.shared.open(url)
+                                }
+                            }
+                        } message: {
+                            Text("Go to Settings > Health > Data Accesss & Devices > blood_pressure and click \"Turn On All\"")
+                        }
+                    }
+                }
+                .navigationTitle("Add Data")
+                .toolbar {
+                    ToolbarItem {
+                        Menu("Menu", systemImage: "ellipsis.circle") {
+//                            NavigationLink(destination: ScheduleView()) {
+//                                Label("Reminders", systemImage: "clock")
+//                            }
+                            Button("Reminders", systemImage: "clock") {
+                                showingSheet.toggle()
+                            }
+                            
+                        }
                     }
                 }
             }
             .onAppear {
                 refreshNowButtonNextMinute()
             }
-            .navigationTitle("Add Data")
-        }
+            
+//            ScheduleView()
+//                .tabItem {
+//                    Label("Reminders", systemImage: "clock")
+//                }
         
+        .sheet(isPresented: $showingSheet) {
+            ScheduleView()
+        }
     }
     
     func refreshNowButtonNextMinute() {
