@@ -63,45 +63,43 @@ struct ScheduleView: View {
     @AppStorage("enableNotifications") private var enableNotifications = false
     
     var body: some View {
-        NavigationStack {
-            Form {
-                Section {
-                    Toggle("Reminder Notifications", isOn: $enableNotifications)
-                        .onChange(of: enableNotifications) { oldValue, newValue in
-                            if newValue {
-                                UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
-                                    if success {
-                                        print("All set!")
-                                    } else if let error {
-                                        print(error.localizedDescription)
-                                        enableNotifications = false
-                                    }
+        Form {
+            Section {
+                Toggle("Reminder Notifications", isOn: $enableNotifications)
+                    .onChange(of: enableNotifications) { oldValue, newValue in
+                        if newValue {
+                            UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
+                                if success {
+                                    print("All set!")
+                                } else if let error {
+                                    print(error.localizedDescription)
+                                    enableNotifications = false
                                 }
-                            } else {
-                                print("removing all notifications")
-                                //                        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
-                                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [TimeOfDay.morning.getNotificationIdentifier(), TimeOfDay.afternoon.getNotificationIdentifier(), TimeOfDay.evening.getNotificationIdentifier()])
                             }
+                        } else {
+                            print("removing all notifications")
+                            //                        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+                            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [TimeOfDay.morning.getNotificationIdentifier(), TimeOfDay.afternoon.getNotificationIdentifier(), TimeOfDay.evening.getNotificationIdentifier()])
                         }
-                } footer: {
-                    Text("When switched on, this app can send you timed notifications to remind you to take measurements.")
-                }
-                if enableNotifications {
-                    NotificationTimePicker(for: .morning)
-                    NotificationTimePicker(for: .afternoon)
-                    NotificationTimePicker(for: .evening)
-                }
+                    }
+            } footer: {
+                Text("When switched on, this app can send you timed notifications to remind you to take measurements.")
             }
-            .navigationTitle("Reminders")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem {
-                    Button(action: {
-                        dismiss()
-                    }, label: {
-                        Text("Done")
-                    })
-                }
+            if enableNotifications {
+                NotificationTimePicker(for: .morning)
+                NotificationTimePicker(for: .afternoon)
+                NotificationTimePicker(for: .evening)
+            }
+        }
+        .navigationTitle("Reminders")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem {
+                Button(action: {
+                    dismiss()
+                }, label: {
+                    Text("Done")
+                })
             }
         }
     }
@@ -147,7 +145,7 @@ struct NotificationTimePicker: View {
                             // There is no notification so add one
                             notificationEnabled = false
                             print("Scheduling notification for \(timeOfDay.getName())")
-//                            scheduleRecurringNotification(for: timeOfDay, at: Calendar.current.dateComponents([.hour, .minute], from: notificationTime))
+                            //                            scheduleRecurringNotification(for: timeOfDay, at: Calendar.current.dateComponents([.hour, .minute], from: notificationTime))
                         }
                     }
                 }
@@ -170,7 +168,7 @@ struct NotificationTimePicker: View {
 }
 
 func changeNotificationTime(of timeOfDay: TimeOfDay, time: DateComponents) {
-//    UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+    //    UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
     UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [timeOfDay.getNotificationIdentifier()])
     scheduleRecurringNotification(for: timeOfDay, at: time)
 }
@@ -180,13 +178,13 @@ func scheduleRecurringNotification(for timeOfDay: TimeOfDay, at dateMatching: Da
     content.title = timeOfDay.getNotificationTitle()
     content.body = "It's time to measure your blood pressure."
     content.sound = UNNotificationSound.default
-
+    
     // show this notification five seconds from now
     let trigger = UNCalendarNotificationTrigger(dateMatching: dateMatching, repeats: true)
     
     // choose a random identifier
     let request = UNNotificationRequest(identifier: timeOfDay.getNotificationIdentifier(), content: content, trigger: trigger)
-
+    
     // add our notification request
     UNUserNotificationCenter.current().add(request)
 }

@@ -124,7 +124,9 @@ struct ContentView: View {
             refreshNowButtonNextMinute()
         }
         .sheet(isPresented: $showingSheet) {
-            ScheduleView()
+            NavigationStack {
+                ScheduleView()
+            }
         }
     }
     
