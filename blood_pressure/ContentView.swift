@@ -48,90 +48,81 @@ struct ContentView: View {
         ScheduleView()
     }
     var body: some View {
-            NavigationStack {
-                ZStack {
-                    Form {
-                        HStack {
-                            DatePicker(
-                                "Date",
-                                selection: $date,
-                                displayedComponents: [.date, .hourAndMinute]
-                            ).foregroundStyle(.gray)
-                                .datePickerStyle(.compact)
-                            if showingNowButton || !Calendar.current.isDate(date, equalTo: Date(), toGranularity: .minute) {
-                                Button {
-                                    date = Date()
-                                    showingNowButton = false
-                                    refreshNowButtonNextMinute()
-                                } label: {
-                                    Text("Now")
-                                }.padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 0))
+        NavigationStack {
+            ZStack {
+                Form {
+                    HStack {
+                        DatePicker(
+                            "Date",
+                            selection: $date,
+                            displayedComponents: [.date, .hourAndMinute]
+                        ).foregroundStyle(.gray)
+                            .datePickerStyle(.compact)
+                        if showingNowButton || !Calendar.current.isDate(date, equalTo: Date(), toGranularity: .minute) {
+                            Button {
+                                date = Date()
+                                showingNowButton = false
+                                refreshNowButtonNextMinute()
+                            } label: {
+                                Text("Now")
+                            }.padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 0))
+                        }
+                    }
+                    Section(header: Text("Blood Pressure")) {
+                        SimpleNumberInput(text: "Systolic", value: $systolic)
+                        SimpleNumberInput(text: "Diastolic", value: $diastolic)
+                    }
+                    Section(header: Text("Heart Rate")) {
+                        SimpleNumberInput(text: "BPM", value: $heartRate)
+                    }
+                    
+                }
+                VStack {
+                    Spacer()
+                    Button {
+                        onAddDataPressed()
+                    } label: {
+                        if showingSaved {
+                            Label("Saved Successfully", systemImage: "checkmark").frame(maxWidth: .infinity, maxHeight: 36)
+                        } else {
+                            Label("Add to Health", systemImage: "plus").frame(maxWidth: .infinity, maxHeight: 36)
+                        }
+                    }
+                    .disabled(systolic == nil || diastolic == nil || heartRate == nil).labelStyle(.titleAndIcon).buttonStyle(.borderedProminent).padding()
+                    .alert(
+                        "Can't access your Health Data",
+                        isPresented: $showingAccessDeniedAlert
+                    ) {
+                        Button("OK") {
+                            // Handle the acknowledgement.
+                        }
+                        Button("Open Settings") {
+                            // Get the settings URL and open it
+                            // Settings url would be URL(string: UIApplication.openSettingsURLString)
+                            if let url = URL(string: "App-Prefs:HEALTH&path=SOURCES_ITEM") {
+                                UIApplication.shared.open(url)
                             }
                         }
-                        Section(header: Text("Blood Pressure")) {
-                            SimpleNumberInput(text: "Systolic", value: $systolic)
-                            SimpleNumberInput(text: "Diastolic", value: $diastolic)
-                        }
-                        Section(header: Text("Heart Rate")) {
-                            SimpleNumberInput(text: "BPM", value: $heartRate)
+                    } message: {
+                        Text("Go to Settings > Health > Data Accesss & Devices > blood_pressure and click \"Turn On All\"")
+                    }
+                }
+            }
+            .navigationTitle("Add Data")
+            .toolbar {
+                ToolbarItem {
+                    Menu("Menu", systemImage: "ellipsis.circle") {
+                        Button("Reminders", systemImage: "clock") {
+                            showingSheet.toggle()
                         }
                         
                     }
-                    VStack {
-                        Spacer()
-                        Button {
-                            onAddDataPressed()
-                        } label: {
-                            if showingSaved {
-                                Label("Saved Successfully", systemImage: "checkmark").frame(maxWidth: .infinity, maxHeight: 36)
-                            } else {
-                                Label("Add to Health", systemImage: "plus").frame(maxWidth: .infinity, maxHeight: 36)
-                            }
-                        }
-                        .disabled(systolic == nil || diastolic == nil || heartRate == nil).labelStyle(.titleAndIcon).buttonStyle(.borderedProminent).padding()
-                        .alert(
-                            "Can't access your Health Data",
-                            isPresented: $showingAccessDeniedAlert
-                        ) {
-                            Button("OK") {
-                                // Handle the acknowledgement.
-                            }
-                            Button("Open Settings") {
-                                // Get the settings URL and open it
-                                // Settings url would be URL(string: UIApplication.openSettingsURLString)
-                                if let url = URL(string: "App-Prefs:HEALTH&path=SOURCES_ITEM") {
-                                    UIApplication.shared.open(url)
-                                }
-                            }
-                        } message: {
-                            Text("Go to Settings > Health > Data Accesss & Devices > blood_pressure and click \"Turn On All\"")
-                        }
-                    }
-                }
-                .navigationTitle("Add Data")
-                .toolbar {
-                    ToolbarItem {
-                        Menu("Menu", systemImage: "ellipsis.circle") {
-//                            NavigationLink(destination: ScheduleView()) {
-//                                Label("Reminders", systemImage: "clock")
-//                            }
-                            Button("Reminders", systemImage: "clock") {
-                                showingSheet.toggle()
-                            }
-                            
-                        }
-                    }
                 }
             }
-            .onAppear {
-                refreshNowButtonNextMinute()
-            }
-            
-//            ScheduleView()
-//                .tabItem {
-//                    Label("Reminders", systemImage: "clock")
-//                }
-        
+        }
+        .onAppear {
+            refreshNowButtonNextMinute()
+        }
         .sheet(isPresented: $showingSheet) {
             ScheduleView()
         }
@@ -167,71 +158,26 @@ struct ContentView: View {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                         showingSaved = false
                     }
+                    clearRelevantNotification()
                 }
             }
         }
         
     }
     
+    func clearRelevantNotification() {
+        UNUserNotificationCenter.current().getDeliveredNotifications { notifications in
+            notifications.forEach { notification in
+                let diff = date.timeIntervalSince(notification.date)
+                if abs(diff) < 60 * 60 {
+                    UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: [notification.request.identifier])
+                }
+            }
+        }
+    }
+    
 }
 
 #Preview {
     ContentView()
-}
-
-class HealthKitManager {
-    fileprivate let healthKitStore = HKHealthStore()
-    
-    private let systolicType = HKQuantityType.quantityType(forIdentifier: .bloodPressureSystolic)!
-    private let diastolicType = HKSampleType.quantityType(forIdentifier: .bloodPressureDiastolic)!
-    private let heartRateType = HKSampleType.quantityType(forIdentifier: .heartRate)!
-    
-    func isSharingAuthorized() -> Bool {
-        let systolicStatus = healthKitStore.authorizationStatus(for: systolicType)
-        let diastolicStatus = healthKitStore.authorizationStatus(for: diastolicType)
-        let heartRateStatus = healthKitStore.authorizationStatus(for: heartRateType)
-        return systolicStatus == HKAuthorizationStatus.sharingAuthorized && diastolicStatus == HKAuthorizationStatus.sharingAuthorized && heartRateStatus == HKAuthorizationStatus.sharingAuthorized
-    }
-    
-    func authorizationRequestHealthKit(completion: @escaping (Bool, Error?) -> Void) {
-        // 1
-        guard HKHealthStore.isHealthDataAvailable() else {
-            let error = NSError(domain: "com.zsoltkebel.mobile", code: 999,
-                                userInfo: [NSLocalizedDescriptionKey : "Healthkit not available on this device"])
-            completion(false, error)
-            print("HealthKit not available on this device")
-            return
-        }
-        // 2
-        let types: Set<HKSampleType> = [systolicType, diastolicType, heartRateType]
-        // 3
-        healthKitStore.requestAuthorization(toShare: types, read: types) { (success: Bool, error: Error?) in
-            completion(success, error)
-        }
-    }
-    
-    func saveBloodPressureMeasurement(date startDate: Date = Date(), systolic: Int, diastolic: Int, heartRate: Int, completion: @escaping (Bool, Error?) -> Void) {
-        // 1
-        let endDate = startDate
-        // 2
-        let systolicType = HKQuantityType.quantityType(forIdentifier: .bloodPressureSystolic)!
-        let systolicQuantity = HKQuantity(unit: HKUnit.millimeterOfMercury(), doubleValue: Double(systolic))
-        let systolicSample = HKQuantitySample(type: systolicType, quantity: systolicQuantity, start: startDate, end: endDate)
-        let diastolicType = HKQuantityType.quantityType(forIdentifier: .bloodPressureDiastolic)!
-        let diastolicQuantity = HKQuantity(unit: HKUnit.millimeterOfMercury(), doubleValue: Double(diastolic))
-        let diastolicSample = HKQuantitySample(type: diastolicType, quantity: diastolicQuantity, start: startDate, end: endDate)
-        // 3
-        let bpCorrelationType = HKCorrelationType.correlationType(forIdentifier: .bloodPressure)!
-        let bpCorrelation = Set(arrayLiteral: systolicSample, diastolicSample)
-        let bloodPressureSample = HKCorrelation(type: bpCorrelationType , start: startDate, end: endDate, objects: bpCorrelation)
-        // 4
-        let beatsCountUnit = HKUnit.count()
-        let heartRateQuantity = HKQuantity(unit: beatsCountUnit.unitDivided(by: HKUnit.minute()), doubleValue: Double(heartRate))
-        let heartRateType = HKQuantityType.quantityType(forIdentifier: .heartRate)!
-        let heartRateSample = HKQuantitySample(type: heartRateType, quantity: heartRateQuantity, start: startDate, end: endDate)
-        // 5
-        healthKitStore.save([bloodPressureSample, heartRateSample]) { (success: Bool, error: Error?) in
-            completion(success, error)
-        }
-    }
 }

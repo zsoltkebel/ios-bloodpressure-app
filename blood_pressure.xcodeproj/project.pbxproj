@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AF6B3C482B74847A00347CF7 /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6B3C472B74847A00347CF7 /* HealthKitManager.swift */; };
 		AF7A1B5F2B6FAC6D000FD995 /* ScheduleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF7A1B5E2B6FAC6D000FD995 /* ScheduleView.swift */; };
 		AF99E5D92B62562400B30ABE /* blood_pressureApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF99E5D82B62562400B30ABE /* blood_pressureApp.swift */; };
 		AF99E5DB2B62562400B30ABE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF99E5DA2B62562400B30ABE /* ContentView.swift */; };
@@ -15,6 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		AF6B3C472B74847A00347CF7 /* HealthKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitManager.swift; sourceTree = "<group>"; };
 		AF7A1B5E2B6FAC6D000FD995 /* ScheduleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleView.swift; sourceTree = "<group>"; };
 		AF99E5D52B62562400B30ABE /* blood_pressure.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = blood_pressure.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF99E5D82B62562400B30ABE /* blood_pressureApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = blood_pressureApp.swift; sourceTree = "<group>"; };
@@ -57,6 +59,7 @@
 				AF99E5D82B62562400B30ABE /* blood_pressureApp.swift */,
 				AF99E5DA2B62562400B30ABE /* ContentView.swift */,
 				AF7A1B5E2B6FAC6D000FD995 /* ScheduleView.swift */,
+				AF6B3C472B74847A00347CF7 /* HealthKitManager.swift */,
 				AF99E5DC2B62562600B30ABE /* Assets.xcassets */,
 				AF99E5DE2B62562600B30ABE /* blood_pressure.entitlements */,
 				AF99E5DF2B62562600B30ABE /* Preview Content */,
@@ -144,6 +147,7 @@
 			files = (
 				AF99E5DB2B62562400B30ABE /* ContentView.swift in Sources */,
 				AF99E5D92B62562400B30ABE /* blood_pressureApp.swift in Sources */,
+				AF6B3C482B74847A00347CF7 /* HealthKitManager.swift in Sources */,
 				AF7A1B5F2B6FAC6D000FD995 /* ScheduleView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
