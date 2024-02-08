@@ -8,7 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		AF6B3C482B74847A00347CF7 /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6B3C472B74847A00347CF7 /* HealthKitManager.swift */; };
-		AF7A1B5F2B6FAC6D000FD995 /* ScheduleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF7A1B5E2B6FAC6D000FD995 /* ScheduleView.swift */; };
+		AF6B3C4A2B748C1F00347CF7 /* AddData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6B3C492B748C1F00347CF7 /* AddData.swift */; };
+		AF7A1B5F2B6FAC6D000FD995 /* RemindersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF7A1B5E2B6FAC6D000FD995 /* RemindersView.swift */; };
 		AF99E5D92B62562400B30ABE /* BloodPressureApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF99E5D82B62562400B30ABE /* BloodPressureApp.swift */; };
 		AF99E5DB2B62562400B30ABE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF99E5DA2B62562400B30ABE /* ContentView.swift */; };
 		AF99E5DD2B62562600B30ABE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF99E5DC2B62562600B30ABE /* Assets.xcassets */; };
@@ -17,7 +18,8 @@
 
 /* Begin PBXFileReference section */
 		AF6B3C472B74847A00347CF7 /* HealthKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitManager.swift; sourceTree = "<group>"; };
-		AF7A1B5E2B6FAC6D000FD995 /* ScheduleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleView.swift; sourceTree = "<group>"; };
+		AF6B3C492B748C1F00347CF7 /* AddData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddData.swift; sourceTree = "<group>"; };
+		AF7A1B5E2B6FAC6D000FD995 /* RemindersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemindersView.swift; sourceTree = "<group>"; };
 		AF99E5D52B62562400B30ABE /* BloodPressure.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BloodPressure.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF99E5D82B62562400B30ABE /* BloodPressureApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloodPressureApp.swift; sourceTree = "<group>"; };
 		AF99E5DA2B62562400B30ABE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -58,7 +60,8 @@
 			children = (
 				AF99E5D82B62562400B30ABE /* BloodPressureApp.swift */,
 				AF99E5DA2B62562400B30ABE /* ContentView.swift */,
-				AF7A1B5E2B6FAC6D000FD995 /* ScheduleView.swift */,
+				AF6B3C492B748C1F00347CF7 /* AddData.swift */,
+				AF7A1B5E2B6FAC6D000FD995 /* RemindersView.swift */,
 				AF6B3C472B74847A00347CF7 /* HealthKitManager.swift */,
 				AF99E5DC2B62562600B30ABE /* Assets.xcassets */,
 				AF99E5DE2B62562600B30ABE /* BloodPressure.entitlements */,
@@ -147,8 +150,9 @@
 			files = (
 				AF99E5DB2B62562400B30ABE /* ContentView.swift in Sources */,
 				AF99E5D92B62562400B30ABE /* BloodPressureApp.swift in Sources */,
+				AF6B3C4A2B748C1F00347CF7 /* AddData.swift in Sources */,
 				AF6B3C482B74847A00347CF7 /* HealthKitManager.swift in Sources */,
-				AF7A1B5F2B6FAC6D000FD995 /* ScheduleView.swift in Sources */,
+				AF7A1B5F2B6FAC6D000FD995 /* RemindersView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -279,7 +283,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BloodPressure/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = ***REMOVED***;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -322,7 +326,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BloodPressure/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = ***REMOVED***;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;

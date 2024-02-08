@@ -56,7 +56,7 @@ enum TimeOfDay {
     }
 }
 
-struct ScheduleView: View {
+struct RemindersView: View {
     @Environment(\.dismiss) var dismiss
     
     // TODO: retrieve this setting
@@ -106,7 +106,7 @@ struct ScheduleView: View {
 }
 
 #Preview {
-    ScheduleView()
+    RemindersView()
 }
 
 struct NotificationTimePicker: View {
