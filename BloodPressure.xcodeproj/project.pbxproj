@@ -10,6 +10,7 @@
 		AF6B3C482B74847A00347CF7 /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6B3C472B74847A00347CF7 /* HealthKitManager.swift */; };
 		AF6B3C4A2B748C1F00347CF7 /* AddData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6B3C492B748C1F00347CF7 /* AddData.swift */; };
 		AF6B3C4D2B74955F00347CF7 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = AF6B3C4C2B74955E00347CF7 /* .gitignore */; };
+		AF6B3C6A2B79664000347CF7 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6B3C692B79664000347CF7 /* HistoryView.swift */; };
 		AF7A1B5F2B6FAC6D000FD995 /* RemindersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF7A1B5E2B6FAC6D000FD995 /* RemindersView.swift */; };
 		AF99E5D92B62562400B30ABE /* BloodPressureApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF99E5D82B62562400B30ABE /* BloodPressureApp.swift */; };
 		AF99E5DB2B62562400B30ABE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF99E5DA2B62562400B30ABE /* ContentView.swift */; };
@@ -22,6 +23,7 @@
 		AF6B3C492B748C1F00347CF7 /* AddData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddData.swift; sourceTree = "<group>"; };
 		AF6B3C4B2B7491A600347CF7 /* project.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = project.xcconfig; sourceTree = "<group>"; };
 		AF6B3C4C2B74955E00347CF7 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		AF6B3C692B79664000347CF7 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		AF7A1B5E2B6FAC6D000FD995 /* RemindersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemindersView.swift; sourceTree = "<group>"; };
 		AF99E5D52B62562400B30ABE /* BloodPressure.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BloodPressure.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF99E5D82B62562400B30ABE /* BloodPressureApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloodPressureApp.swift; sourceTree = "<group>"; };
@@ -65,6 +67,7 @@
 			children = (
 				AF99E5D82B62562400B30ABE /* BloodPressureApp.swift */,
 				AF99E5DA2B62562400B30ABE /* ContentView.swift */,
+				AF6B3C692B79664000347CF7 /* HistoryView.swift */,
 				AF6B3C492B748C1F00347CF7 /* AddData.swift */,
 				AF7A1B5E2B6FAC6D000FD995 /* RemindersView.swift */,
 				AF6B3C472B74847A00347CF7 /* HealthKitManager.swift */,
@@ -155,6 +158,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AF99E5DB2B62562400B30ABE /* ContentView.swift in Sources */,
+				AF6B3C6A2B79664000347CF7 /* HistoryView.swift in Sources */,
 				AF99E5D92B62562400B30ABE /* BloodPressureApp.swift in Sources */,
 				AF6B3C4A2B748C1F00347CF7 /* AddData.swift in Sources */,
 				AF6B3C482B74847A00347CF7 /* HealthKitManager.swift in Sources */,

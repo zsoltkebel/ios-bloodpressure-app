@@ -63,4 +63,43 @@ class HealthKitManager {
             completion(success, error)
         }
     }
+    
+    func readSampleByBloodPressure(completion: @escaping ([Reading]) -> Void) {
+        let startDate = Calendar.current.date(byAdding: .day, value: -14, to: Date())
+        let now   = Date()
+        let predicate = HKQuery.predicateForSamples(withStart: startDate, end: now, options: .strictStartDate)
+        
+        let sortDescriptor = NSSortDescriptor(key:HKSampleSortIdentifierStartDate, ascending: true)
+        let type = HKCorrelationType(.bloodPressure)
+        let sampleQuery = HKSampleQuery(sampleType: type, predicate: predicate, limit: Int(HKObjectQueryNoLimit), sortDescriptors: nil)
+        { (sampleQuery, results, error ) -> Void in
+            if let error = error {
+                print("Error: \(error.localizedDescription)")
+                return
+            }
+            //            print(results)
+            
+            guard let samples = results as? [HKCorrelation] else {
+                return
+            }
+            
+            var readings: [Reading] = []
+            for sample in samples {
+                if let sys = sample.objects(for: HKQuantityType(.bloodPressureSystolic)).first as? HKQuantitySample,
+                   let dia = sample.objects(for: HKQuantityType(.bloodPressureDiastolic)).first as? HKQuantitySample {
+                    
+                    let value1 = sys.quantity.doubleValue(for: HKUnit.millimeterOfMercury())
+                    let value2 = dia.quantity.doubleValue(for: HKUnit.millimeterOfMercury())
+                    
+                    print("\(value1) / \(value2)")
+                    readings.append(Reading(sys: value1, dia: value2, heartRate: 0, date: sample.startDate))
+                }
+            }
+            
+            completion(readings)
+            //            print(samples)
+        }
+        self.healthKitStore.execute(sampleQuery)
+        
+    }
 }
