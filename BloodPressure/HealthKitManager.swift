@@ -69,7 +69,6 @@ class HealthKitManager {
         let now   = Date()
         let predicate = HKQuery.predicateForSamples(withStart: startDate, end: now, options: .strictStartDate)
         
-        let sortDescriptor = NSSortDescriptor(key:HKSampleSortIdentifierStartDate, ascending: true)
         let type = HKCorrelationType(.bloodPressure)
         let sampleQuery = HKSampleQuery(sampleType: type, predicate: predicate, limit: Int(HKObjectQueryNoLimit), sortDescriptors: nil)
         { (sampleQuery, results, error ) -> Void in

@@ -9,26 +9,25 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var showingSheet = false
+    @State private var showingNotificationSheet = false
     
-    var body2: some View {
-        RemindersView()
-    }
     var body: some View {
         NavigationStack {
+            //            SetupView()
+            //            HistoryView()
             AddData()
+            //            Trackingsetup()
                 .toolbar {
                     ToolbarItem {
                         Menu("Menu", systemImage: "ellipsis.circle") {
-                            Button("Reminders", systemImage: "clock") {
+                            Button("Reminders", systemImage: "bell") {
                                 showingSheet.toggle()
                             }
                         }
                     }
                 }
                 .sheet(isPresented: $showingSheet) {
-                    NavigationStack {
-                        RemindersView()
-                    }
+                    SettingsView()
                 }
         }
     }
@@ -36,4 +35,5 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
+        .modelContainer(PreviewSampleData.container)
 }

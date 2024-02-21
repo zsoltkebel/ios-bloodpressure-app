@@ -38,24 +38,86 @@ struct HistoryView: View {
 }
 
 #Preview {
-    HistoryView(readings: [Reading(sys: 120, dia: 80, heartRate: 70, date: Date())])
+    HistoryView(readings: [Reading(sys: 120, dia: 80, heartRate: 70, date: Date()), Reading(sys: 120, dia: 80, heartRate: 70, date: Date())])
 }
 
 struct ReadingListItem: View {
+    let date = Date()
     let reading: Reading
     
+    @State private var isOn = true
+    @State private var isOn2 = true
+
+    
     var body: some View {
-        HStack {
-            VStack(alignment: .trailing, content: {
-                Text(String(format: "%.f", reading.sys))
-                    .bold()
-                Text(String(format: "%.f", reading.dia))
-                    .bold()
-                    .foregroundStyle(.secondary)
-            })
-            Spacer()
-            Text(reading.date, style: .date)
-            Text(reading.date, style: .time)
-        }
+        Section(content: {
+            HStack {
+                Text("Morning")
+                Spacer()
+                Image(systemName: "checkmark.circle.fill")
+            }
+            HStack {
+                Text("Evening")
+                Spacer()
+                Image(systemName: "plus.circle")
+            }
+            HStack {
+                Image(systemName: "sunrise")
+                Image(systemName: "sun.max")
+                Image(systemName: "moonset")
+            }
+            HStack {
+                Toggle(isOn: $isOn) {
+                    if isOn {
+                        VStack {
+                            Label("Morning", systemImage: "sunrise")
+                                .labelStyle(.iconOnly)
+                            Label("Morning", systemImage: "checkmark")
+                                .labelStyle(.titleOnly)
+                        }
+                    } else {
+                        Text("Morning")
+                    }
+                }
+                .toggleStyle(.button)
+                Toggle(isOn: $isOn2) {
+                    if isOn2 {
+                        VStack {
+                            Label("Morning", systemImage: "sun.max")
+                                .labelStyle(.iconOnly)
+                            Label("Afternoon", systemImage: "checkmark")
+                                .labelStyle(.titleOnly)
+                        }
+                    } else {
+                        Text("Morning")
+                    }
+                }
+                .toggleStyle(.button)
+//                Toggle("Afternoon", isOn: $isOn)
+//                    .toggleStyle(.button)
+//                    .buttonStyle(.borderedProminent)
+//                Spacer()
+//                Button(action: {
+//                    
+//                }, label: {
+//                    Text("Evening")
+//                })
+            }
+//            HStack {
+//                VStack(alignment: .trailing, content: {
+//                    Text(String(format: "%.f", reading.sys))
+//                        .bold()
+//                    Text(String(format: "%.f", reading.dia))
+//                        .bold()
+//                        .foregroundStyle(.secondary)
+//                })
+//                Spacer()
+//                Text(reading.date, style: .date)
+//                Text(reading.date, style: .time)
+//            }
+        }, header: {
+            Text("Today")
+                .font(.subheadline)
+        })
     }
 }
