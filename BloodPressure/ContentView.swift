@@ -15,7 +15,8 @@ struct ContentView: View {
         NavigationStack {
             //            SetupView()
             //            HistoryView()
-            AddData()
+//            AddData()
+            WelcomeView()
             //            Trackingsetup()
                 .toolbar {
                     ToolbarItem {

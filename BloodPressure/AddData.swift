@@ -6,93 +6,147 @@
 //
 
 import SwiftUI
+import Combine
+
+enum Options: String {
+    case now, custom
+}
 
 struct AddData: View {
-    @State private var date = Date()  // date and time of the measurement
+    enum FocusedField: Int {
+        case sys, dia, heartRate
+    }
+    
+    @Environment(\.dismiss) var dismiss
+    
+    @State private var date: Date = Date()  // date and time of the measurement
     @State private var systolic: Int?
     @State private var diastolic: Int?
     @State private var heartRate: Int?
     
     private var healtKitManager = HealthKitManager()
     
-    // the toggle for showing-hiding the "Now" button next to the date and time picker
-    @State private var showingNowButton = false
     // the toggle for showing "Health access is denied open Settings" to enable alert
     @State private var showingAccessDeniedAlert = false
     
-    @State private var showingSaved = false
+    @FocusState private var focusedField: FocusedField?
+    
+    init(sys: Int? = nil, dia: Int? = nil, hr: Int? = nil) {
+        self._systolic = State(initialValue: sys)
+        self._diastolic = State(initialValue: dia)
+        self._heartRate = State(initialValue: hr)
+    }
     
     var body: some View {
-        ZStack {
-            Form {
-                HStack {
-                    DatePicker(
-                        "Date",
-                        selection: $date,
-                        displayedComponents: [.date, .hourAndMinute]
-                    ).foregroundStyle(.gray)
-                        .datePickerStyle(.compact)
-                    if showingNowButton || !Calendar.current.isDate(date, equalTo: Date(), toGranularity: .minute) {
-                        Button {
-                            date = Date()
-                            showingNowButton = false
-                            refreshNowButtonNextMinute()
+        NavigationStack {
+            ZStack {
+                Form {
+                    // Date & Time section
+                    Section {
+                        NavigationLink {
+                            Form {
+                                DatePicker("Date & Time", selection: $date)
+                                    .datePickerStyle(.graphical)
+                            }
+                            .navigationTitle("Date & Time")
+                            .toolbarTitleDisplayMode(.inline)
                         } label: {
-                            Text("Now")
-                        }.padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 0))
-                    }
-                }
-                Section(header: Text("Blood Pressure")) {
-                    SimpleNumberInput(text: "Systolic", value: $systolic)
-                    SimpleNumberInput(text: "Diastolic", value: $diastolic)
-                }
-                Section(header: Text("Heart Rate")) {
-                    SimpleNumberInput(text: "BPM", value: $heartRate)
-                }
-                
-            }
-            VStack {
-                Spacer()
-                Button {
-                    onAddDataPressed()
-                } label: {
-                    if showingSaved {
-                        Label("Saved Successfully", systemImage: "checkmark").frame(maxWidth: .infinity, maxHeight: 36)
-                    } else {
-                        Label("Add to Health", systemImage: "plus").frame(maxWidth: .infinity, maxHeight: 36)
-                    }
-                }
-                .disabled(systolic == nil || diastolic == nil || heartRate == nil).labelStyle(.titleAndIcon).buttonStyle(.borderedProminent).padding()
-                .alert(
-                    "Can't access your Health Data",
-                    isPresented: $showingAccessDeniedAlert
-                ) {
-                    Button("OK") {
-                        // Handle the acknowledgement.
-                    }
-                    Button("Open Settings") {
-                        // Get the settings URL and open it
-                        // Settings url would be URL(string: UIApplication.openSettingsURLString)
-                        if let url = URL(string: "App-Prefs:HEALTH&path=SOURCES_ITEM") {
-                            UIApplication.shared.open(url)
+                            Text(date.relativeString())
+                                .fontWeight(.bold)
+                                .padding(.customVertical)
                         }
+                    } header: {
+                        Text("Date & Time")
                     }
-                } message: {
-                    Text("Go to Settings > Health > Data Accesss & Devices > blood_pressure and click \"Turn On All\"")
+                    
+                    // Blood Pressure input section
+                    Section {
+                        HStack {
+                            SimpleNumberInput(text: "Systolic", value: $systolic)
+                                .focused($focusedField, equals: .sys)
+                            Divider()
+                                .padding([.vertical], -4)
+                                .padding([.horizontal], 10)
+                            SimpleNumberInput(text: "Diastolic", value: $diastolic)
+                                .focused($focusedField, equals: .dia)
+                        }
+                    } header: {
+                        Text("Blood Pressure")
+                    }
+                    
+                    // Heart Rate input section
+                    Section {
+                        SimpleNumberInput(text: "BPM", value: $heartRate)
+                            .focused($focusedField, equals: .heartRate)
+                    } header: {
+                        Text("Heart Rate")
+                    }
+                }
+                .fontDesign(.rounded)
+            }
+            .navigationTitle("Add to Health")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar(content: {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") {
+                        dismiss()
+                    }
+                }
+                ToolbarItem(placement: .primaryAction) {
+                    Button("Add") {
+                        onAddDataPressed()
+                    }
+                    .disabled(!self.isInputValid())
+                }
+            })
+            .onAppear {
+                focusedField = .sys
+            }
+            .alert(
+                "Can't access your Health Data",
+                isPresented: $showingAccessDeniedAlert
+            ) {
+                Button("OK") {
+                    // Handle the acknowledgement.
+                }
+                Button("Open Settings") {
+                    // Get the settings URL and open it
+                    // Settings url would be URL(string: UIApplication.openSettingsURLString)
+                    if let url = URL(string: "App-Prefs:HEALTH&path=SOURCES_ITEM") {
+                        UIApplication.shared.open(url)
+                    }
+                }
+            } message: {
+                Text("Go to Settings > Health > Data Accesss & Devices > blood_pressure and click \"Turn On All\"")
+            }
+            .onChange(of: systolic) {
+                if let systolic = systolic {
+                    if String(systolic).count >= 3 {
+                        focusNextField()
+                    }
                 }
             }
-        }
-        .navigationTitle("Add Data")
-        .onAppear {
-            refreshNowButtonNextMinute()
+            .onChange(of: diastolic) {
+                if let diastolic = diastolic {
+                    if String(diastolic).count >= 2 {
+                        focusNextField()
+                    }
+                }
+            }
         }
     }
     
-    func refreshNowButtonNextMinute() {
-        let nextMinute = DispatchTime.now() + 60 - Double(Calendar.current.component(.second, from: Date()))
-        DispatchQueue.main.asyncAfter(deadline: nextMinute) {
-            showingNowButton = true
+    private func focusNextField() {
+        focusedField = focusedField.map {
+            FocusedField(rawValue: $0.rawValue + 1) ?? .sys
         }
+    }
+    
+    func isInputValid() -> Bool {
+        let sysValid = systolic != nil && 40 <= systolic! && systolic! <= 300
+        let diaValid = diastolic != nil && 30 <= diastolic! && diastolic! <= 200
+        let heartRateValid = heartRate != nil && 30 <= heartRate! && heartRate! <= 350
+        return sysValid && diaValid && heartRateValid
     }
     
     func onAddDataPressed() {
@@ -107,11 +161,8 @@ struct AddData: View {
                     systolic = nil
                     diastolic = nil
                     heartRate = nil
-                    showingSaved = true
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                        showingSaved = false
-                    }
                     clearRelevantNotification()
+                    dismiss()
                 }
             }
         }
@@ -138,17 +189,39 @@ struct SimpleNumberInput: View {
     
     var body: some View {
         HStack {
-            Text(text).foregroundStyle(.gray).onTapGesture(perform: {
-                focused = true
-            })
+            Text("\(text)")
+                .foregroundStyle(.secondary)
+                .fontDesign(.rounded)
             TextField("", value: value, format: .number)
                 .keyboardType(.numberPad)
                 .multilineTextAlignment(.trailing)
                 .focused($focused)
+                .fontWeight(.bold)
         }
+        .padding(.customVertical)
+        .onTapGesture(perform: {
+            focused = true
+        })
     }
 }
 
 #Preview {
-    AddData()
+    AddData(sys: 120, dia: 80)
+        .modelContainer(PreviewSampleData.container)
+}
+
+extension Date {
+    func relativeString() -> String {
+        let relativeDateFormatter = DateFormatter()
+        relativeDateFormatter.timeStyle = .short
+        relativeDateFormatter.dateStyle = .medium
+        relativeDateFormatter.locale = Locale(identifier: "en_GB")
+        relativeDateFormatter.doesRelativeDateFormatting = true
+        
+        return relativeDateFormatter.string(from: self)
+    }
+}
+
+extension EdgeInsets {
+    static var customVertical = EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0)
 }
