@@ -101,4 +101,26 @@ class HealthKitManager {
         self.healthKitStore.execute(sampleQuery)
         
     }
+    
+    func fetchHeartRateData(completion: (([HKQuantitySample]) -> Void)? = nil) {
+        let startDate = Calendar.current.date(byAdding: .day, value: -14, to: Date())
+        let now   = Date()
+        let predicate = HKQuery.predicateForSamples(withStart: startDate, end: now, options: .strictStartDate)
+        
+        let type = HKQuantityType(.heartRate)
+        let sampleQuery = HKSampleQuery(sampleType: type, predicate: predicate, limit: Int(HKObjectQueryNoLimit), sortDescriptors: nil)
+        { (sampleQuery, results, error ) -> Void in
+            if let error = error {
+                print("Error: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let samples = results as? [HKQuantitySample] else {
+                return
+            }
+            completion?(samples)
+            print(samples)
+        }
+        self.healthKitStore.execute(sampleQuery)
+    }
 }

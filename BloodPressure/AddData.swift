@@ -45,7 +45,7 @@ struct AddData: View {
                     Section {
                         NavigationLink {
                             Form {
-                                DatePicker("Date & Time", selection: $date)
+                                DatePicker("Date & Time", selection: $date, in: Date.distantPast...Date.now)
                                     .datePickerStyle(.graphical)
                             }
                             .navigationTitle("Date & Time")
@@ -219,6 +219,16 @@ extension Date {
         relativeDateFormatter.doesRelativeDateFormatting = true
         
         return relativeDateFormatter.string(from: self)
+    }
+    
+    func relativeDateString() -> String {
+        if Calendar.current.isDateInToday(self) {
+            return "Today"
+        }
+        if Calendar.current.isDateInYesterday(self) {
+            return "Yesterday"
+        }
+        return self.formatted(.dateTime.weekday(.wide).day().month())
     }
 }
 
