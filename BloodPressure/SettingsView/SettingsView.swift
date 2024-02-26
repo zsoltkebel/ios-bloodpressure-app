@@ -11,7 +11,7 @@ import SwiftData
 struct SettingsView: View {
     @Environment(\.dismiss) var dismiss
     
-    @Query(sort: \PartOfDay.startDate) var times: [PartOfDay]
+    @Query(sort: \PartOfDay.preferredTime) var times: [PartOfDay]
     
     var body: some View {
         NavigationStack {
@@ -19,6 +19,9 @@ struct SettingsView: View {
                 Section {
                     ForEach(times) { time in
                         TimeOfDayListItem(timeOfDay: time)
+                    }
+                    Button("Add Time") {
+                        //TODO: implement add custom time feature
                     }
                 } header: {
                     Text("Times of Day")
@@ -32,7 +35,7 @@ struct SettingsView: View {
 //                    Text("Notifications")
 //                }
             }
-            .navigationTitle("Reminders")
+            .navigationTitle("Times")
             .navigationBarTitleDisplayMode(.inline)
             .navigationDestination(for: PartOfDay.self) { time in
                 UpdateTimeOfDayView(timeOfDay: time)
@@ -70,12 +73,12 @@ struct NotificationsToggleView: View {
         Toggle("Recieve Reminders", isOn: $notificationsEnabled)
             .disabled(settings?.authorizationStatus == .denied || settings?.authorizationStatus == .notDetermined)
             .onChange(of: notificationsEnabled) {
-                if notificationsEnabled {
-                    times.filter({ $0.isTracked }).forEach({ $0.addNotification() })
-                } else {
-                    UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
-                    times.filter({ $0.isTracked }).forEach({ $0.removePendingNotification() })
-                }
+//                if notificationsEnabled {
+//                    times.filter({ $0.isTracked }).forEach({ $0.addNotification() })
+//                } else {
+//                    UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+//                    times.filter({ $0.isTracked }).forEach({ $0.removePendingNotification() })
+//                }
             }
             .task {
                 await onViewBecomesActive()

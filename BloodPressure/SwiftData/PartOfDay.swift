@@ -12,25 +12,22 @@ import NotificationCenter
 @Model
 final class PartOfDay {
     @Attribute(.unique)
-    let name: String
-    let startDate: Date
-    let endDate: Date
-    var isTracked: Bool
+    var name: String
+    var preferredTime: Date // Only used for time
     @Attribute(.unique)
     var notificationIdentifier: String?
-    var notificationDate: Date
+    var notificationBody: String // To customise notification
         
 //    var isNotificationEnabled: Bool { return notificationIdentifier != nil }
     
-    init(name: String, startDate: Date, endDate: Date, isTracked: Bool, notificationIdentifier: String? = nil) {
+    init(name: String, preferredTime: Date, notificationIdentifier: String? = nil, notificationBody: String? = nil) {
         self.name = name
-        self.startDate = startDate
-        self.endDate = endDate
-        self.isTracked = isTracked
+        self.preferredTime = preferredTime
         self.notificationIdentifier = notificationIdentifier
+        self.notificationBody = notificationBody ?? ""
         
-        let minuteDiff = Calendar.current.dateComponents([.minute], from: startDate, to: endDate)
-        self.notificationDate = Calendar.current.date(byAdding: DateComponents(minute: minuteDiff.minute! / 2), to: startDate)!
+//        let minuteDiff = Calendar.current.dateComponents([.minute], from: startDate, to: endDate)
+//        self.notificationDate = Calendar.current.date(byAdding: DateComponents(minute: minuteDiff.minute! / 2), to: startDate)!
     }
 }
 
@@ -47,7 +44,7 @@ extension PartOfDay {
         content.sound = UNNotificationSound.default
         
         // show this notification five seconds from now
-        let trigger = UNCalendarNotificationTrigger(dateMatching: self.notificationDate.hourAndMinute(), repeats: true)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: self.preferredTime.hourAndMinute(), repeats: true)
         
         // choose a random identifier
         let id = UUID().uuidString
@@ -56,7 +53,7 @@ extension PartOfDay {
         // add our notification request
         UNUserNotificationCenter.current().add(request) { error in
             if error == nil {
-                print("Added notification for \(self.name) at \(self.notificationDate.hourAndMinute())")
+                print("Added notification for \(self.name) at \(self.preferredTime.hourAndMinute())")
                 self.notificationIdentifier = id
             }
             completion?(request, error)
@@ -73,29 +70,37 @@ extension PartOfDay {
 }
 
 extension PartOfDay {
-    var range: ClosedRange<Date> { self.startDate...self.endDate }
     
-    var notificationTimeComponents: DateComponents { Calendar.current.dateComponents([.hour, .minute], from: self.notificationDate)}
+    func range(on day: Date = .distantPast) -> ClosedRange<Date> {
+        let cal = Calendar.current
+        let components = cal.dateComponents([.hour, .minute, .second], from: self.preferredTime)
+        let timeOnDay = cal.date(bySettingHour: components.hour!, minute: components.minute!, second: components.second!, of: day)!
+        let start = cal.date(byAdding: .hour, value: -1, to: timeOnDay)!
+        let end = cal.date(byAdding: .hour, value: 1, to: timeOnDay)!
+        return start...end
+    }
+    
+//    var notificationTimeComponents: DateComponents { Calendar.current.dateComponents([.hour, .minute], from: self.notificationDate)}
     
     var isNotificationEnabled: Bool { self.notificationIdentifier != nil }
     
-    var date: Date {
-        let minuteDiff = Calendar.current.dateComponents([.minute], from: startDate, to: endDate)
-        return Calendar.current.date(byAdding: DateComponents(minute: minuteDiff.minute! / 2), to: startDate)!
-    }
+//    var date: Date {
+//        let minuteDiff = Calendar.current.dateComponents([.minute], from: startDate, to: endDate)
+//        return Calendar.current.date(byAdding: DateComponents(minute: minuteDiff.minute! / 2), to: startDate)!
+//    }
 }
 
 extension PartOfDay {
     static var morning: PartOfDay {
-        PartOfDay(name: "Morning", startDate: Date.time(0, 00), endDate: Date.time(12, 00), isTracked: false)
+        PartOfDay(name: "Morning", preferredTime: Date.time(8, 00))
     }
     
     static var afternoon: PartOfDay {
-        PartOfDay(name: "Afternoon", startDate: Date.time(12, 00), endDate: Date.time(17, 00), isTracked: false)
+        PartOfDay(name: "Afternoon", preferredTime: Date.time(16, 00))
     }
     
     static var evening: PartOfDay {
-        PartOfDay(name: "Evening", startDate: Date.time(17, 00), endDate: Date.time(24, 00), isTracked: false)
+        PartOfDay(name: "Evening", preferredTime: Date.time(20, 00))
     }
     
     static var defaults: [PartOfDay] = [.morning, .afternoon, .evening]

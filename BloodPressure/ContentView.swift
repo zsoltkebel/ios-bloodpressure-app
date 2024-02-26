@@ -9,19 +9,15 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var showingSheet = false
-    @State private var showingNotificationSheet = false
     
     var body: some View {
         NavigationStack {
-            //            SetupView()
-                        HistoryView()
-//            AddData()
-//            WelcomeView()
-            //            Trackingsetup()
+            DaySummaryView()
+                .navigationBarTitleDisplayMode(.large)
                 .toolbar {
                     ToolbarItem {
                         Menu("Menu", systemImage: "ellipsis.circle") {
-                            Button("Reminders", systemImage: "bell") {
+                            Button("Edit Times", systemImage: "pencil") {
                                 showingSheet.toggle()
                             }
                         }
@@ -29,6 +25,7 @@ struct ContentView: View {
                 }
                 .sheet(isPresented: $showingSheet) {
                     SettingsView()
+                        .presentationDetents([.medium, .large])
                 }
         }
     }

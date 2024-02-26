@@ -15,21 +15,21 @@ struct TimeOfDayListItem: View {
             HStack {
                 Text(timeOfDay.name)
                 Spacer()
-                if timeOfDay.isTracked {
-                    Text(timeOfDay.notificationDate, style: .time)
-                        .foregroundStyle(.secondary)
-                } else {
-                    Text("Off")
-                        .foregroundStyle(.secondary)
-                }
+                Text(timeOfDay.preferredTime, style: .time)
+                    .foregroundStyle(.secondary)
+                Image(systemName: timeOfDay.isNotificationEnabled ? "bell" : "bell.slash")
+                    .imageScale(.small)
+                    .foregroundStyle(.secondary)
+                    .padding([.horizontal], 4)
             }
         }
     }
 }
 
 #Preview {
-    List {
-        TimeOfDayListItem(timeOfDay: PartOfDay.morning)
+    ModelContainerPreview(PreviewSampleData.inMemoryContainer) {
+        List {
+            TimeOfDayListItem(timeOfDay: PartOfDay.morning)
+        }
     }
-    .modelContainer(PreviewSampleData.container)
 }

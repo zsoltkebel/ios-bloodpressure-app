@@ -14,16 +14,17 @@
 		AF163CEE2B82787500A4CD72 /* TimeOfDayListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF163CED2B82787500A4CD72 /* TimeOfDayListItem.swift */; };
 		AF163CF02B827A2B00A4CD72 /* UpdateTimeOfDayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF163CEF2B827A2B00A4CD72 /* UpdateTimeOfDayView.swift */; };
 		AF163CF22B82C3AC00A4CD72 /* PreviewSampleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF163CF12B82C3AC00A4CD72 /* PreviewSampleData.swift */; };
-		AF163CF42B874B0E00A4CD72 /* MeasurementTimeSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF163CF32B874B0E00A4CD72 /* MeasurementTimeSelectorView.swift */; };
-		AF163CF62B88FAF700A4CD72 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF163CF52B88FAF700A4CD72 /* WelcomeView.swift */; };
 		AF6B3C482B74847A00347CF7 /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6B3C472B74847A00347CF7 /* HealthKitManager.swift */; };
 		AF6B3C4A2B748C1F00347CF7 /* AddData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6B3C492B748C1F00347CF7 /* AddData.swift */; };
 		AF6B3C4D2B74955F00347CF7 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = AF6B3C4C2B74955E00347CF7 /* .gitignore */; };
-		AF6B3C6A2B79664000347CF7 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6B3C692B79664000347CF7 /* HistoryView.swift */; };
+		AF6B3C6A2B79664000347CF7 /* Reading.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6B3C692B79664000347CF7 /* Reading.swift */; };
 		AF99E5D92B62562400B30ABE /* BloodPressureApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF99E5D82B62562400B30ABE /* BloodPressureApp.swift */; };
 		AF99E5DB2B62562400B30ABE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF99E5DA2B62562400B30ABE /* ContentView.swift */; };
 		AF99E5DD2B62562600B30ABE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF99E5DC2B62562600B30ABE /* Assets.xcassets */; };
 		AF99E5E12B62562600B30ABE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF99E5E02B62562600B30ABE /* Preview Assets.xcassets */; };
+		AFC2B58A2B89FD84000A3FF5 /* DaySummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC2B5892B89FD84000A3FF5 /* DaySummaryView.swift */; };
+		AFC2B58E2B8A1389000A3FF5 /* Brain.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC2B58D2B8A1389000A3FF5 /* Brain.swift */; };
+		AFC2B5922B8A572E000A3FF5 /* ReadingListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC2B5912B8A572E000A3FF5 /* ReadingListItem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,19 +35,20 @@
 		AF163CED2B82787500A4CD72 /* TimeOfDayListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeOfDayListItem.swift; sourceTree = "<group>"; };
 		AF163CEF2B827A2B00A4CD72 /* UpdateTimeOfDayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateTimeOfDayView.swift; sourceTree = "<group>"; };
 		AF163CF12B82C3AC00A4CD72 /* PreviewSampleData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewSampleData.swift; sourceTree = "<group>"; };
-		AF163CF32B874B0E00A4CD72 /* MeasurementTimeSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementTimeSelectorView.swift; sourceTree = "<group>"; };
-		AF163CF52B88FAF700A4CD72 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		AF6B3C472B74847A00347CF7 /* HealthKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitManager.swift; sourceTree = "<group>"; };
 		AF6B3C492B748C1F00347CF7 /* AddData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddData.swift; sourceTree = "<group>"; };
 		AF6B3C4B2B7491A600347CF7 /* project.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = project.xcconfig; sourceTree = "<group>"; };
 		AF6B3C4C2B74955E00347CF7 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
-		AF6B3C692B79664000347CF7 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
+		AF6B3C692B79664000347CF7 /* Reading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reading.swift; sourceTree = "<group>"; };
 		AF99E5D52B62562400B30ABE /* BloodPressure.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BloodPressure.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF99E5D82B62562400B30ABE /* BloodPressureApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloodPressureApp.swift; sourceTree = "<group>"; };
 		AF99E5DA2B62562400B30ABE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		AF99E5DC2B62562600B30ABE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AF99E5DE2B62562600B30ABE /* BloodPressure.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BloodPressure.entitlements; sourceTree = "<group>"; };
 		AF99E5E02B62562600B30ABE /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		AFC2B5892B89FD84000A3FF5 /* DaySummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaySummaryView.swift; sourceTree = "<group>"; };
+		AFC2B58D2B8A1389000A3FF5 /* Brain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Brain.swift; sourceTree = "<group>"; };
+		AFC2B5912B8A572E000A3FF5 /* ReadingListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingListItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +76,7 @@
 			isa = PBXGroup;
 			children = (
 				AF163CD12B80C55D00A4CD72 /* PartOfDay.swift */,
+				AF163CD52B81031000A4CD72 /* TimeItemContainer.swift */,
 			);
 			path = SwiftData;
 			sourceTree = "<group>";
@@ -99,17 +102,17 @@
 		AF99E5D72B62562400B30ABE /* BloodPressure */ = {
 			isa = PBXGroup;
 			children = (
+				AFC2B5972B8D2A19000A3FF5 /* Model */,
 				AF163CEC2B82767F00A4CD72 /* SwiftData */,
 				AF163CF12B82C3AC00A4CD72 /* PreviewSampleData.swift */,
 				AF163CE02B817A7300A4CD72 /* ModelContainerPreview.swift */,
 				AF99E5D82B62562400B30ABE /* BloodPressureApp.swift */,
-				AF163CD52B81031000A4CD72 /* TimeItemContainer.swift */,
 				AF99E5DA2B62562400B30ABE /* ContentView.swift */,
-				AF6B3C692B79664000347CF7 /* HistoryView.swift */,
 				AF6B3C492B748C1F00347CF7 /* AddData.swift */,
-				AF163CF52B88FAF700A4CD72 /* WelcomeView.swift */,
-				AF163CF32B874B0E00A4CD72 /* MeasurementTimeSelectorView.swift */,
 				AF6B3C472B74847A00347CF7 /* HealthKitManager.swift */,
+				AFC2B58D2B8A1389000A3FF5 /* Brain.swift */,
+				AFC2B5912B8A572E000A3FF5 /* ReadingListItem.swift */,
+				AFC2B5892B89FD84000A3FF5 /* DaySummaryView.swift */,
 				AF99E5DC2B62562600B30ABE /* Assets.xcassets */,
 				AF99E5DE2B62562600B30ABE /* BloodPressure.entitlements */,
 				AF99E5DF2B62562600B30ABE /* Preview Content */,
@@ -124,6 +127,14 @@
 				AF99E5E02B62562600B30ABE /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		AFC2B5972B8D2A19000A3FF5 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				AF6B3C692B79664000347CF7 /* Reading.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -202,15 +213,16 @@
 				AF163CF22B82C3AC00A4CD72 /* PreviewSampleData.swift in Sources */,
 				AF163CEE2B82787500A4CD72 /* TimeOfDayListItem.swift in Sources */,
 				AF163CD62B81031000A4CD72 /* TimeItemContainer.swift in Sources */,
-				AF6B3C6A2B79664000347CF7 /* HistoryView.swift in Sources */,
+				AF6B3C6A2B79664000347CF7 /* Reading.swift in Sources */,
 				AF99E5D92B62562400B30ABE /* BloodPressureApp.swift in Sources */,
+				AFC2B5922B8A572E000A3FF5 /* ReadingListItem.swift in Sources */,
+				AFC2B58A2B89FD84000A3FF5 /* DaySummaryView.swift in Sources */,
 				AF15DD232B802EED009BE817 /* SettingsView.swift in Sources */,
 				AF6B3C4A2B748C1F00347CF7 /* AddData.swift in Sources */,
-				AF163CF42B874B0E00A4CD72 /* MeasurementTimeSelectorView.swift in Sources */,
 				AF6B3C482B74847A00347CF7 /* HealthKitManager.swift in Sources */,
 				AF163CD22B80C55D00A4CD72 /* PartOfDay.swift in Sources */,
+				AFC2B58E2B8A1389000A3FF5 /* Brain.swift in Sources */,
 				AF163CE12B817A7300A4CD72 /* ModelContainerPreview.swift in Sources */,
-				AF163CF62B88FAF700A4CD72 /* WelcomeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
