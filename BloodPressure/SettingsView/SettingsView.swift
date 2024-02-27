@@ -10,30 +10,27 @@ import SwiftData
 
 struct SettingsView: View {
     @Environment(\.dismiss) var dismiss
+    @Environment(\.modelContext) var modelContext
     
     @Query(sort: \PartOfDay.preferredTime) var times: [PartOfDay]
     
+    @State private var path = [PartOfDay]()
+    
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             Form {
                 Section {
                     ForEach(times) { time in
                         TimeOfDayListItem(timeOfDay: time)
                     }
                     Button("Add Time") {
-                        //TODO: implement add custom time feature
+                        addTime()
                     }
                 } header: {
                     Text("Times of Day")
                 } footer: {
-                    Text("Select the times you want to track your blood pressure and heartrate throughout the day.")
+                    Text("Customise the times you want to measure your blood pressure and heartrate throughout the day.")
                 }
-                //TODO: Future feature
-//                Section {
-//                    NotificationsToggleView(times: times)
-//                } header: {
-//                    Text("Notifications")
-//                }
             }
             .navigationTitle("Times")
             .navigationBarTitleDisplayMode(.inline)
@@ -53,6 +50,13 @@ struct SettingsView: View {
         }
     }
     
+    private func addTime() {
+        let time = PartOfDay()
+        DispatchQueue.main.async {
+            modelContext.insert(time)
+            path = [time]
+        }
+    }
 }
 
 #Preview {

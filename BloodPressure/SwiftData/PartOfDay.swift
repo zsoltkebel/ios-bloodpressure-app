@@ -20,6 +20,13 @@ final class PartOfDay {
         
 //    var isNotificationEnabled: Bool { return notificationIdentifier != nil }
     
+    init() {
+        self.name = ""
+        self.preferredTime = Date.time(8, 00)
+        self.notificationIdentifier = nil
+        self.notificationBody = ""
+    }
+    
     init(name: String, preferredTime: Date, notificationIdentifier: String? = nil, notificationBody: String? = nil) {
         self.name = name
         self.preferredTime = preferredTime
