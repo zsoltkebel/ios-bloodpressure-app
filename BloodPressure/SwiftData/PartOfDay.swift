@@ -11,7 +11,6 @@ import NotificationCenter
 
 @Model
 final class PartOfDay {
-    @Attribute(.unique)
     var name: String
     var preferredTime: Date // Only used for time
     @Attribute(.unique)
