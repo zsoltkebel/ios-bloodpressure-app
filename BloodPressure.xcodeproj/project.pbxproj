@@ -40,6 +40,7 @@
 		AF6B3C4B2B7491A600347CF7 /* project.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = project.xcconfig; sourceTree = "<group>"; };
 		AF6B3C4C2B74955E00347CF7 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		AF6B3C692B79664000347CF7 /* Reading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reading.swift; sourceTree = "<group>"; };
+		AF8091252B92075300F49492 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		AF99E5D52B62562400B30ABE /* BloodPressure.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BloodPressure.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF99E5D82B62562400B30ABE /* BloodPressureApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloodPressureApp.swift; sourceTree = "<group>"; };
 		AF99E5DA2B62562400B30ABE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -84,6 +85,7 @@
 		AF99E5CC2B62562400B30ABE = {
 			isa = PBXGroup;
 			children = (
+				AF8091252B92075300F49492 /* README.md */,
 				AF6B3C4C2B74955E00347CF7 /* .gitignore */,
 				AF6B3C4B2B7491A600347CF7 /* project.xcconfig */,
 				AF99E5D72B62562400B30ABE /* BloodPressure */,
@@ -358,6 +360,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Blood Pressure";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.medical";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "The app needs to access health data to be able to read your measurements from the Health app.";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "The app needs to access health data to be able to save your measurements into the Health app.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
@@ -397,6 +400,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Blood Pressure";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.medical";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "The app needs to access health data to be able to read your measurements from the Health app.";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "The app needs to access health data to be able to save your measurements into the Health app.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
