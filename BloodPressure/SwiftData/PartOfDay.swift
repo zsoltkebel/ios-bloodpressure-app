@@ -112,49 +112,10 @@ extension PartOfDay {
     static var defaults: [PartOfDay] = [.morning, .afternoon, .evening]
 }
 
-
-
-
-
-extension Date {
-    static func timeToday(minutesSinceMidnight: Int) -> Date? {
-        return Calendar.current.date(from: DateComponents(hour: 10))
-    }
-    
-    func minutesSinceMidnight() -> Int {
-        let dateComponents = Calendar.current.dateComponents([.hour, .minute], from: self)
-        return dateComponents.hour! * 60 + dateComponents.minute!
-    }
-
-    static func time(_ hour: Int, _ minute: Int) -> Date {
-        return Calendar.current.date(from: DateComponents(hour: hour, minute: minute))!
-    }
-    
-    func hourAndMinute() -> DateComponents {
-        return self.components([.hour, .minute])
-    }
-    
-    func components(_ dateComponents: Set<Calendar.Component>) -> DateComponents {
-        return Calendar.current.dateComponents(dateComponents, from: self)
-    }
-    
-    /// Same hour and minute on the first date (1st January 1)
-    func on1January1() -> Date {
-        let hourAndMinute = self.hourAndMinute()
-        return Date.time(hourAndMinute.hour!, hourAndMinute.minute!)
-    }
-}
-
 extension Calendar {
     static func date(from minutesSinceMidnight: Int) -> Date? {
         let hour = minutesSinceMidnight / 60
         let minute = minutesSinceMidnight % 60
         return self.current.date(bySettingHour: hour, minute: minute, second: 0, of: Date())
     }
-}
-
-extension Date {
-//    func timeOfDay() -> TimeOfDay {
-//        let secondsSinceMidnight = Calendar.current.datecom
-//    }
 }

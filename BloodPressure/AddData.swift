@@ -210,28 +210,6 @@ struct SimpleNumberInput: View {
         .modelContainer(PreviewSampleData.container)
 }
 
-extension Date {
-    func relativeString() -> String {
-        let relativeDateFormatter = DateFormatter()
-        relativeDateFormatter.timeStyle = .short
-        relativeDateFormatter.dateStyle = .medium
-        relativeDateFormatter.locale = Locale(identifier: "en_GB")
-        relativeDateFormatter.doesRelativeDateFormatting = true
-        
-        return relativeDateFormatter.string(from: self)
-    }
-    
-    func relativeDateString() -> String {
-        if Calendar.current.isDateInToday(self) {
-            return "Today"
-        }
-        if Calendar.current.isDateInYesterday(self) {
-            return "Yesterday"
-        }
-        return self.formatted(.dateTime.weekday(.wide).day().month())
-    }
-}
-
 extension EdgeInsets {
     static var customVertical = EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0)
 }

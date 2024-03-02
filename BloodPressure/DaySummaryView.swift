@@ -9,18 +9,6 @@ import SwiftUI
 import SwiftData
 import Combine
 
-extension Date {
-    func setTime(from timeString: String) -> Date {
-        let parts = timeString.split(separator: ":")
-        return Calendar.current.date(bySettingHour: Int(parts[0])!, minute: Int(parts[1])!, second: 0, of: self)!
-    }
-    
-    func sameTime(on date: Date = .now) -> Date? {
-        let components = Calendar.current.dateComponents([.hour, .minute, .second], from: self)
-        return Calendar.current.date(bySettingHour: components.hour!, minute: components.minute!, second: components.second!, of: date)
-    }
-}
-
 struct DaySummaryView: View {
     
     var day: Date = .now
