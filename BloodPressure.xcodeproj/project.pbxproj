@@ -18,6 +18,7 @@
 		AF6B3C4A2B748C1F00347CF7 /* AddData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6B3C492B748C1F00347CF7 /* AddData.swift */; };
 		AF6B3C4D2B74955F00347CF7 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = AF6B3C4C2B74955E00347CF7 /* .gitignore */; };
 		AF6B3C6A2B79664000347CF7 /* Reading.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6B3C692B79664000347CF7 /* Reading.swift */; };
+		AF8091282B932C1600F49492 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8091272B932C1600F49492 /* Date.swift */; };
 		AF99E5D92B62562400B30ABE /* BloodPressureApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF99E5D82B62562400B30ABE /* BloodPressureApp.swift */; };
 		AF99E5DB2B62562400B30ABE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF99E5DA2B62562400B30ABE /* ContentView.swift */; };
 		AF99E5DD2B62562600B30ABE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF99E5DC2B62562600B30ABE /* Assets.xcassets */; };
@@ -41,6 +42,7 @@
 		AF6B3C4C2B74955E00347CF7 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		AF6B3C692B79664000347CF7 /* Reading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reading.swift; sourceTree = "<group>"; };
 		AF8091252B92075300F49492 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		AF8091272B932C1600F49492 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		AF99E5D52B62562400B30ABE /* BloodPressure.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BloodPressure.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF99E5D82B62562400B30ABE /* BloodPressureApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloodPressureApp.swift; sourceTree = "<group>"; };
 		AF99E5DA2B62562400B30ABE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -82,6 +84,14 @@
 			path = SwiftData;
 			sourceTree = "<group>";
 		};
+		AF8091262B932C0100F49492 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				AF8091272B932C1600F49492 /* Date.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		AF99E5CC2B62562400B30ABE = {
 			isa = PBXGroup;
 			children = (
@@ -104,6 +114,7 @@
 		AF99E5D72B62562400B30ABE /* BloodPressure */ = {
 			isa = PBXGroup;
 			children = (
+				AF8091262B932C0100F49492 /* Extensions */,
 				AFC2B5972B8D2A19000A3FF5 /* Model */,
 				AF163CEC2B82767F00A4CD72 /* SwiftData */,
 				AF163CF12B82C3AC00A4CD72 /* PreviewSampleData.swift */,
@@ -213,6 +224,7 @@
 				AF163CF02B827A2B00A4CD72 /* UpdateTimeOfDayView.swift in Sources */,
 				AF99E5DB2B62562400B30ABE /* ContentView.swift in Sources */,
 				AF163CF22B82C3AC00A4CD72 /* PreviewSampleData.swift in Sources */,
+				AF8091282B932C1600F49492 /* Date.swift in Sources */,
 				AF163CEE2B82787500A4CD72 /* TimeOfDayListItem.swift in Sources */,
 				AF163CD62B81031000A4CD72 /* TimeItemContainer.swift in Sources */,
 				AF6B3C6A2B79664000347CF7 /* Reading.swift in Sources */,

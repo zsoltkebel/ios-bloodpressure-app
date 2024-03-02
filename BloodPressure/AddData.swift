@@ -19,7 +19,7 @@ struct AddData: View {
     
     @Environment(\.dismiss) var dismiss
     
-    @State private var date: Date = Date()  // date and time of the measurement
+    @State private var date: Date = .now.minutePrecision()!  // date and time of the measurement
     @State private var systolic: Int?
     @State private var diastolic: Int?
     @State private var heartRate: Int?

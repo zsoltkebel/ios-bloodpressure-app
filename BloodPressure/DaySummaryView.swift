@@ -79,7 +79,6 @@ struct DaySummaryView: View {
                 }
             })
         }
-        
     }
 }
 

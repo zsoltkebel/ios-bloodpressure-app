@@ -8,11 +8,14 @@
 import SwiftUI
 
 struct ContentView: View {
+    @Environment(\.scenePhase) var scenePhase
+    
+    @State private var today: Date = .now
     @State private var showingSheet = false
     
     var body: some View {
         NavigationStack {
-            DaySummaryView()
+            DaySummaryView(day: today)
                 .navigationBarTitleDisplayMode(.large)
                 .toolbar {
                     ToolbarItem {
@@ -27,6 +30,12 @@ struct ContentView: View {
                     SettingsView()
                         .presentationDetents([.medium, .large])
                 }
+        }
+        .onChange(of: scenePhase) {
+            if scenePhase == .active {
+                today = .now.minutePrecision()!
+                print("Updating today to \(today)")
+            }
         }
     }
 }
